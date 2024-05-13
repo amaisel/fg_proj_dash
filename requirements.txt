@@ -2,3 +2,6 @@ panel
 hvplot
 scikit-learn
 nbconvert
+espn_api
+numpy
+pandas
