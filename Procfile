@@ -1,1 +1,1 @@
-web: panel serve --address="0.0.0.0" --port=$PORT radial.py --allow-websocket-origin=fivecat-dash.herokuapp.com --allow-websocket-origin=localhost:5001 
+web: panel serve --address="0.0.0.0" --port=$PORT radial.py --allow-websocket-origin=fivecat-dash.herokuapp.com --allow-websocket-origin=localhost:5001 --allow-websocket-origin=fivecat-dash-54640a095f90.herokuapp.com
