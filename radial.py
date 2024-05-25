@@ -3,7 +3,6 @@ import re
 import pandas as pd
 import numpy as np
 import panel as pn
-import panel as pn
 import plotly.graph_objects as go
 from compare_players import normalize, format_data_table
 import import_fg_projections as import_fg
@@ -18,7 +17,7 @@ is_offszn = False
 models = import_fg.pull_projections(is_offszn)
 
 # Create a function that returns a plot_radial function and a update_data_table function with a specific player_type
-def create_functions(models,player_type):
+def create_radials(models,player_type):
 
     
 
@@ -95,6 +94,53 @@ def create_functions(models,player_type):
 
     # Create the DataFrame widget outside of the function
     df_widget = pn.widgets.Tabulator(name='Interactive DataFrame', layout='fit_data')
+    # Define the formatting options
+
+
+    # Define the formatting options
+    df_widget.format = {
+        'Name': {'formatter': 'textarea'},
+        'Team': {'formatter': 'textarea'},
+        'minpos': {'formatter': 'textarea'},
+        'PA': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'WAR': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'wRC+': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'wOBA': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'OBP': {'formatter': 'number', 'formatterParams': {'precision': 3}},
+        'RBI': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'HR': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'R': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'SB': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'IP': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'FIP': {'formatter': 'number', 'formatterParams': {'precision': 2}},
+        'ERA': {'formatter': 'number', 'formatterParams': {'precision': 2}},
+        'SO': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'WHIP': {'formatter': 'number', 'formatterParams': {'precision': 2}},
+        'W': {'formatter': 'number', 'formatterParams': {'precision': 0}},
+        'SV': {'formatter': 'number', 'formatterParams': {'precision': 0}}
+    }
+
+    # from panel.widgets.tabulator import Styler
+
+    # # Define a function to apply the style
+    # def highlight(value):
+    #     return f'<div style="background-color:#FFFF00;">{value}</div>'
+
+    # # Create a Styler object
+    # styler = df_widget.Styler.from_columns({
+    #     'OBP': highlight,
+    #     'RBI': highlight,
+    #     'HR': highlight,
+    #     'R': highlight,
+    #     'SB': highlight,
+    #     'ERA': highlight,
+    #     'SO': highlight,
+    #     'WHIP': highlight,
+    # })
+
+    # # Apply the styler to the Tabulator widget
+    # df_widget.formatters = styler
+    
     df_widget.widths = {'Name': 120}
     df_widget.index_position = None
 
@@ -155,6 +201,7 @@ def create_functions(models,player_type):
                     metrics[i] = int(round(metrics[i], 0))
             
             hover_text = f"{player}<br>" + "<br>".join([f"{cat}: {metrics[i]}" for i, cat in enumerate(categories)])
+            
             # hover_text = 
 
             fig.add_trace(go.Scatterpolar(
@@ -190,21 +237,22 @@ def create_functions(models,player_type):
     
 
 # Create instances of update_data_table and plot_radial for hitters and pitchers
-model_selector_hitters, update_minpos_options_hitters, update_player_selector_hitters, update_data_table_hitters, plot_radial_hitters = create_functions(models,'hitters')
-model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_pitchers, update_data_table_pitchers, plot_radial_pitchers = create_functions(models,'pitchers')
+model_selector_hitters, update_minpos_options_hitters, update_player_selector_hitters, update_data_table_hitters, plot_radial_hitters = create_radials(models,'hitters')
+model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_pitchers, update_data_table_pitchers, plot_radial_pitchers = create_radials(models,'pitchers')
 
 # Create the layout
 # hitters
 hitters_filters = pn.Column("# Model and Player Selection", model_selector_hitters, update_minpos_options_hitters, update_player_selector_hitters, sizing_mode='fixed', width=300)
-hitters_layout = pn.Row(hitters_filters, pn.Column(plot_radial_hitters, update_data_table_hitters, sizing_mode='stretch_width'))
+hitters_layout = pn.Row(hitters_filters, pn.Column(plot_radial_hitters, update_data_table_hitters, sizing_mode='stretch_both'))
 
 # pitchers
 pitchers_filters = pn.Column("# Model and Player Selection", model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_pitchers, sizing_mode='fixed', width=300)
-pitchers_layout = pn.Row(pitchers_filters, pn.Column(plot_radial_pitchers, update_data_table_pitchers, sizing_mode='stretch_width'))
+pitchers_layout = pn.Row(pitchers_filters, pn.Column(plot_radial_pitchers, update_data_table_pitchers, sizing_mode='stretch_both'))
 
 tabs = pn.Tabs(
     ('Hitters', hitters_layout), 
-    ('Pitchers', pitchers_layout)
+    ('Pitchers', pitchers_layout),
+    sizing_mode='stretch_both'
 )
 # To display the tabs in the notebook
 tabs.servable()
