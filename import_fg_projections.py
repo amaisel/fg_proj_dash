@@ -6,8 +6,6 @@ import requests
 # Import required libraries
 from zipfile import ZipFile
 import os
-from openpyxl import load_workbook
-
 
 # pull projecitons from Fangraphs
 def fg_projections_pull(fg_url):
