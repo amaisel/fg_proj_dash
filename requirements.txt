@@ -5,3 +5,5 @@ nbconvert
 espn_api
 numpy
 pandas
+plotly
+requests
