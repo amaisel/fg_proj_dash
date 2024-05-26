@@ -91,7 +91,7 @@ def create_radials(models,player_type):
 
     # Widget for player selection with auto-suggest feature
     player_selector = pn.widgets.MultiChoice(name='Select Players', options=[], value=[], placeholder='Type to search players...')
-
+    
     # Create the DataFrame widget outside of the function
     df_widget = pn.widgets.Tabulator(name='Interactive DataFrame', layout='fit_data')
     # Define the formatting options
@@ -240,14 +240,18 @@ def create_radials(models,player_type):
 model_selector_hitters, update_minpos_options_hitters, update_player_selector_hitters, update_data_table_hitters, plot_radial_hitters = create_radials(models,'hitters')
 model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_pitchers, update_data_table_pitchers, plot_radial_pitchers = create_radials(models,'pitchers')
 
+# Create accordions
+accordion_hitters = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_hitters, update_minpos_options_hitters)))
+accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_pitchers, update_minpos_options_pitchers)))
+
 # Create the layout
 # hitters
-hitters_filters = pn.Column("# Model and Player Selection", model_selector_hitters, update_minpos_options_hitters, update_player_selector_hitters, sizing_mode='fixed', width=300)
-hitters_layout = pn.Row(hitters_filters, pn.Column(plot_radial_hitters, update_data_table_hitters, sizing_mode='stretch_both'))
+hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_both')
+hitters_layout = pn.Column(hitters_top_row, plot_radial_hitters, accordion_hitters)
 
 # pitchers
-pitchers_filters = pn.Column("# Model and Player Selection", model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_pitchers, sizing_mode='fixed', width=300)
-pitchers_layout = pn.Row(pitchers_filters, pn.Column(plot_radial_pitchers, update_data_table_pitchers, sizing_mode='stretch_both'))
+pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_both')
+pitchers_layout = pn.Column(pitchers_top_row, plot_radial_pitchers, accordion_pitchers)
 
 tabs = pn.Tabs(
     ('Hitters', hitters_layout), 
