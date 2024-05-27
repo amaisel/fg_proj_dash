@@ -122,9 +122,14 @@ def format_data_table(model_data, players, player_type):
     elif player_type == 'pitchers':
         core_metrics = ['ERA', 'SO', 'W', 'WHIP', 'SV']
         # Custom formatting for display
-        for col in ['ERA', 'WHIP','WAR','FIP']:
+        for col in ['ERA', 'WHIP','WAR','FIP','K/9']:
             selected_data[col] = selected_data[col].apply(lambda x: f'{x:.2f}')
         for col in ['SO', 'W', 'SV','IP']:
             selected_data[col] = selected_data[col].apply(lambda x: f'{x:.0f}')
-        # Return the DataFrame with the core metrics bolded
-        return selected_data[['Name','Team','IP','WAR','FIP','ERA', 'SO', 'WHIP', 'W', 'SV']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
+        
+
+        # # Check if 'K%' column is numeric and not NaN
+        # if pd.to_numeric(selected_data['K%'], errors='coerce').notna().all():
+                    
+        #         # Return the DataFrame with the core metrics bolded
+        return selected_data[['Name','Team','IP','WAR','K/9','FIP','ERA', 'SO', 'WHIP', 'W', 'SV']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})

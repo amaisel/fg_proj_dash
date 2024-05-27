@@ -96,30 +96,6 @@ def create_radials(models,player_type):
     df_widget = pn.widgets.Tabulator(name='Interactive DataFrame', layout='fit_data')
     # Define the formatting options
 
-
-    # Define the formatting options
-    df_widget.format = {
-        'Name': {'formatter': 'textarea'},
-        'Team': {'formatter': 'textarea'},
-        'minpos': {'formatter': 'textarea'},
-        'PA': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'WAR': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'wRC+': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'wOBA': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'OBP': {'formatter': 'number', 'formatterParams': {'precision': 3}},
-        'RBI': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'HR': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'R': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'SB': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'IP': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'FIP': {'formatter': 'number', 'formatterParams': {'precision': 2}},
-        'ERA': {'formatter': 'number', 'formatterParams': {'precision': 2}},
-        'SO': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'WHIP': {'formatter': 'number', 'formatterParams': {'precision': 2}},
-        'W': {'formatter': 'number', 'formatterParams': {'precision': 0}},
-        'SV': {'formatter': 'number', 'formatterParams': {'precision': 0}}
-    }
-
     # from panel.widgets.tabulator import Styler
 
     # # Define a function to apply the style
@@ -220,7 +196,7 @@ def create_radials(models,player_type):
             ),
             showlegend=True,
             width=800,
-            height=400,
+            height=600,
             template="seaborn",
             margin=dict(
             l=50,  # left margin
