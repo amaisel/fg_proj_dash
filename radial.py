@@ -228,7 +228,9 @@ def create_radials(models,player_type):
             b=10,  # bottom margin
             t=10,  # top margin
             pad=0  # padding
-            )
+            ),
+            dragmode=False  # disable zooming
+
         )
 
         return fig
@@ -246,17 +248,17 @@ accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(mode
 
 # Create the layout
 # hitters
-hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_both')
+hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_width')
 hitters_layout = pn.Column(hitters_top_row, plot_radial_hitters, accordion_hitters)
 
 # pitchers
-pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_both')
+pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_width')
 pitchers_layout = pn.Column(pitchers_top_row, plot_radial_pitchers, accordion_pitchers)
 
 tabs = pn.Tabs(
     ('Hitters', hitters_layout), 
     ('Pitchers', pitchers_layout),
-    sizing_mode='stretch_both'
+    sizing_mode='stretch_width'
 )
 # To display the tabs in the notebook
 tabs.servable()
