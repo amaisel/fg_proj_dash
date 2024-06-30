@@ -110,14 +110,14 @@ def format_data_table(model_data, players, player_type):
     if player_type == 'hitters':
         core_metrics = ['OBP', 'RBI', 'HR', 'R', 'SB']
         # Custom formatting for display
-        for col in ['OBP','wOBA']:
+        for col in ['OBP','wOBA','SLG']:
             selected_data[col] = selected_data[col].apply(lambda x: f'{x:.3f}'.lstrip('0'))
         for col in ['RBI', 'HR', 'R', 'SB','wRC+','PA']:
             selected_data[col] = selected_data[col].round(0).astype(int)
         for col in ['WAR']:
             selected_data[col] = selected_data[col].apply(lambda x: f'{x:.2f}')
         # Return the DataFrame with the core metrics bolded
-        return selected_data[['Name','Team','minpos','PA','WAR','wRC+','wOBA','OBP', 'RBI', 'HR', 'R', 'SB']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
+        return selected_data[['Name','Team','minpos','PA','WAR','wRC+','SLG','wOBA','OBP', 'RBI', 'HR', 'R', 'SB']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
 
     elif player_type == 'pitchers':
         core_metrics = ['ERA', 'SO', 'W', 'WHIP', 'SV']
