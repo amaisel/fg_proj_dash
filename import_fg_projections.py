@@ -34,6 +34,9 @@ def fg_projections_pull(fg_url):
     elif 'Name' in df.columns and 'Team' in df.columns:
         # assume it is a pitcher
         df['PlayerInfo'] = df['Name'] + " (" + 'P - ' + df['Team'] + ")"
+
+    # drop rows where PlayerInfo is null
+    df = df.dropna(subset=['PlayerInfo'])
     
     return df
 

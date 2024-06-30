@@ -117,7 +117,7 @@ def format_data_table(model_data, players, player_type):
         for col in ['WAR']:
             selected_data[col] = selected_data[col].apply(lambda x: f'{x:.2f}')
         # Return the DataFrame with the core metrics bolded
-        return selected_data[['Name','Team','minpos','PA','WAR','wRC+','SLG','wOBA','OBP', 'RBI', 'HR', 'R', 'SB']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
+        return selected_data[['Name','Team','minpos','PA','R','HR','RBI','SB','OBP','WAR','wRC+','SLG','wOBA']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
 
     elif player_type == 'pitchers':
         core_metrics = ['ERA', 'SO', 'W', 'WHIP', 'SV']
@@ -132,4 +132,4 @@ def format_data_table(model_data, players, player_type):
         # if pd.to_numeric(selected_data['K%'], errors='coerce').notna().all():
                     
         #         # Return the DataFrame with the core metrics bolded
-        return selected_data[['Name','Team','IP','WAR','K/9','FIP','ERA', 'SO', 'WHIP', 'W', 'SV']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})
+        return selected_data[['Name','Team','IP','SO', 'W', 'SV','ERA','WHIP','WAR','K/9']] #.style.set_properties(subset=core_metrics, **{'font-weight': 'bold'})

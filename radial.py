@@ -90,7 +90,14 @@ def create_radials(models,player_type):
         return player_selector
 
     # Widget for player selection with auto-suggest feature
-    player_selector = pn.widgets.MultiChoice(name='Select Players', options=[], value=[], placeholder='Type to search players...')
+    # Widget for player selection with auto-suggest feature
+    player_selector = pn.widgets.MultiChoice(
+        name='Select Players', 
+        options=[], 
+        value=[], 
+        placeholder='Type to search players...',
+        sizing_mode='stretch_width'  # Make the widget stretch across the screen
+    )
     
     # Create the DataFrame widget outside of the function
     df_widget = pn.widgets.Tabulator(name='Interactive DataFrame', layout='fit_data')
@@ -144,9 +151,7 @@ def create_radials(models,player_type):
     def plot_radial(model_name, players, minpos_values):
         model_data = models[model_name]
 
-        # Filter the model_data based on the selected minpos values
         if 'All' not in minpos_values and 'minpos' in model_data.columns:
-
             model_data = model_data[model_data['minpos'].isin(minpos_values)]
 
         if player_type == 'pitchers':
@@ -160,26 +165,24 @@ def create_radials(models,player_type):
 
         fig = go.Figure()
 
+            # Assuming model_data contains the actual values in columns named after the categories
+# and you have a list of players and their corresponding data in model_data
+
+    
         for player in players:
             df_player = model_data[model_data['PlayerInfo'] == player]
+            
+            # Extract actual values for the categories
+            metrics = df_player[categories].values.flatten().tolist()  # Adjust 'categories' as needed
+            
+            # Continue with metrics_norm and hover_text as before
             metrics_norm = df_player[categories_norm].values.flatten().tolist()
             metrics_norm += metrics_norm[:1]  # Complete the loop in the radar chart
 
-            # Prepare hover text
-            metrics = df_player[categories].values.flatten().tolist()
-
-            for i, cat in enumerate(categories):
-                if cat in ['ERA', 'WHIP']:
-                    metrics[i] = round(metrics[i], 2)
-                elif cat in ['OBP']:
-                    metrics[i] = round(metrics[i], 3)
-                else:
-                    metrics[i] = int(round(metrics[i], 0))
-            
             hover_text = f"{player}<br>" + "<br>".join([f"{cat}: {metrics[i]}" for i, cat in enumerate(categories)])
             
-            # hover_text = 
-
+            # The rest of your code for adding traces and updating layout continues here
+                    
             fig.add_trace(go.Scatterpolar(
                 r=metrics_norm,
                 theta=categories,
@@ -187,29 +190,23 @@ def create_radials(models,player_type):
                 name=player,
                 hoverinfo='text',
                 text=hover_text
-                # , mode = 'lines'
             ))
+            
 
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(visible=False, range=[0, max_value])
             ),
             showlegend=True,
-            width=800,
-            height=600,
-            template="seaborn",
-            margin=dict(
-            l=50,  # left margin
-            r=50,  # right margin
-            b=10,  # bottom margin
-            t=10,  # top margin
-            pad=0  # padding
-            ),
-            dragmode=False  # disable zooming
-
+            template="plotly",
+            margin=dict(l=50, r=50, b=10, t=10, pad=0),
+            dragmode=False
         )
 
-        return fig
+        # Use sizing_mode for responsive width
+        plot = pn.pane.Plotly(fig, sizing_mode='stretch_width')
+
+        return plot
     
     return model_selector, update_minpos_options, update_player_selector, update_data_table, plot_radial
     
@@ -224,12 +221,24 @@ accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(mode
 
 # Create the layout
 # hitters
-hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_width')
-hitters_layout = pn.Column(hitters_top_row, plot_radial_hitters, accordion_hitters)
+# Create the layout
+# hitters
+hitters_layout = pn.Column(
+    update_player_selector_hitters,
+    plot_radial_hitters,
+    update_data_table_hitters,
+    accordion_hitters,
+    sizing_mode='stretch_width'
+)
 
 # pitchers
-pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_width')
-pitchers_layout = pn.Column(pitchers_top_row, plot_radial_pitchers, accordion_pitchers)
+pitchers_layout = pn.Column(
+    update_player_selector_pitchers,
+    plot_radial_pitchers,
+    update_data_table_pitchers,
+    accordion_pitchers,
+    sizing_mode='stretch_width'
+)
 
 tabs = pn.Tabs(
     ('Hitters', hitters_layout), 
@@ -238,3 +247,17 @@ tabs = pn.Tabs(
 )
 # To display the tabs in the notebook
 tabs.servable()
+# hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_width')
+# hitters_layout = pn.Column(hitters_top_row, plot_radial_hitters, accordion_hitters)
+
+# # pitchers
+# pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_width')
+# pitchers_layout = pn.Column(pitchers_top_row, plot_radial_pitchers, accordion_pitchers)
+
+# tabs = pn.Tabs(
+#     ('Hitters', hitters_layout), 
+#     ('Pitchers', pitchers_layout),
+#     sizing_mode='stretch_width'
+# )
+# # To display the tabs in the notebook
+# tabs.servable()
