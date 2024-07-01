@@ -198,10 +198,22 @@ def create_radials(models,player_type):
                 radialaxis=dict(visible=False, range=[0, max_value])
             ),
             showlegend=True,
+            legend=dict(
+                orientation="h", 
+                yanchor="bottom", 
+                y=-0.1, 
+                xanchor="center", 
+                x=0.5
+            ),
             template="plotly",
-            margin=dict(l=50, r=50, b=10, t=10, pad=0),
-            dragmode=False
+            dragmode=False,
+            height=600
         )
+
+        # # Apply margin settings as the last step
+        # fig.update_layout(
+        #     margin=dict(l=50, r=50, b=50, t=5, pad=2)
+        # )
 
         # Use sizing_mode for responsive width
         plot = pn.pane.Plotly(fig, sizing_mode='stretch_width')
@@ -226,7 +238,7 @@ accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(mode
 hitters_layout = pn.Column(
     update_player_selector_hitters,
     plot_radial_hitters,
-    update_data_table_hitters,
+    pn.Row(update_data_table_hitters, align='center'),  # Wrap the table in a pn.Row and align it to center
     accordion_hitters,
     sizing_mode='stretch_width'
 )
@@ -235,13 +247,13 @@ hitters_layout = pn.Column(
 pitchers_layout = pn.Column(
     update_player_selector_pitchers,
     plot_radial_pitchers,
-    update_data_table_pitchers,
+    pn.Row(update_data_table_pitchers,align='center'),  # Wrap the table in a pn.Row and align it to center
     accordion_pitchers,
     sizing_mode='stretch_width'
 )
 
 tabs = pn.Tabs(
-    ('Hitters', hitters_layout), 
+    ('Hitters', hitters_layout),  
     ('Pitchers', pitchers_layout),
     sizing_mode='stretch_width'
 )
