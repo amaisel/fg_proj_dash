@@ -207,7 +207,7 @@ def create_radials(models,player_type):
             ),
             template="plotly",
             dragmode=False,
-            height=600
+            height=900
         )
 
         # # Apply margin settings as the last step
