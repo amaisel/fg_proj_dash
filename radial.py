@@ -9,7 +9,14 @@ import import_fg_projections as import_fg
 
 pn.extension('plotly')
 pn.extension('tabulator')
-
+pn.config.raw_css.append("""
+.tabulator .tabulator-cell {
+    font-size: 14px;
+}
+.tabulator .tabulator-header .tabulator-col {
+    font-size: 14px;
+}
+""")
 
 # Assuming models and format_data_table are defined elsewhere in your script
 # Load data
@@ -100,7 +107,14 @@ def create_radials(models,player_type):
     )
     
     # Create the DataFrame widget outside of the function
-    df_widget = pn.widgets.Tabulator(name='Interactive DataFrame', layout='fit_data')
+    # Create the DataFrame widget outside of the function
+    df_widget = pn.widgets.Tabulator(
+
+    name='Interactive DataFrame', 
+    layout='fit_data'
+    # ,
+    # css=[{'selector': '.tabulator', 'props': [('font-size', '16px')]}]
+    )
     # Define the formatting options
 
     # from panel.widgets.tabulator import Styler
@@ -207,7 +221,10 @@ def create_radials(models,player_type):
             ),
             template="plotly",
             dragmode=False,
-            height=900
+            height=900,
+            font = dict(
+                size = 18
+            )
         )
 
         # # Apply margin settings as the last step
@@ -231,8 +248,6 @@ model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_
 accordion_hitters = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_hitters, update_minpos_options_hitters)))
 accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_pitchers, update_minpos_options_pitchers)))
 
-# Create the layout
-# hitters
 # Create the layout
 # hitters
 hitters_layout = pn.Column(
