@@ -105,7 +105,6 @@ def create_radials(models,player_type):
         placeholder='Type to search players...',
         sizing_mode='stretch_width'  # Make the widget stretch across the screen
     )
-    
     # Create the DataFrame widget outside of the function
     # Create the DataFrame widget outside of the function
     df_widget = pn.widgets.Tabulator(
@@ -212,20 +211,19 @@ def create_radials(models,player_type):
                 radialaxis=dict(visible=False, range=[0, max_value])
             ),
             showlegend=True,
+            autosize=True,  # Ensure the plot resizes
             legend=dict(
                 orientation="h", 
                 yanchor="bottom", 
-                y=-0.1, 
+                y=-0.25, 
                 xanchor="center", 
                 x=0.5
             ),
             template="plotly",
             dragmode=False,
-            height=900,
             font = dict(
                 size = 18
-            )
-        )
+            )        )
 
         # # Apply margin settings as the last step
         # fig.update_layout(
@@ -233,7 +231,7 @@ def create_radials(models,player_type):
         # )
 
         # Use sizing_mode for responsive width
-        plot = pn.pane.Plotly(fig, sizing_mode='stretch_width')
+        plot = pn.pane.Plotly(fig, sizing_mode='stretch_both')
 
         return plot
     
@@ -274,17 +272,3 @@ tabs = pn.Tabs(
 )
 # To display the tabs in the notebook
 tabs.servable()
-# hitters_top_row = pn.Row(update_player_selector_hitters, update_data_table_hitters, sizing_mode='stretch_width')
-# hitters_layout = pn.Column(hitters_top_row, plot_radial_hitters, accordion_hitters)
-
-# # pitchers
-# pitchers_top_row = pn.Row(update_player_selector_pitchers, update_data_table_pitchers, sizing_mode='stretch_width')
-# pitchers_layout = pn.Column(pitchers_top_row, plot_radial_pitchers, accordion_pitchers)
-
-# tabs = pn.Tabs(
-#     ('Hitters', hitters_layout), 
-#     ('Pitchers', pitchers_layout),
-#     sizing_mode='stretch_width'
-# )
-# # To display the tabs in the notebook
-# tabs.servable()
