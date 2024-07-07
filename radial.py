@@ -9,12 +9,50 @@ import import_fg_projections as import_fg
 
 pn.extension('plotly')
 pn.extension('tabulator')
+# Add CSS for mobile responsiveness
 pn.config.raw_css.append("""
+/* Base styles for all screen sizes */
+.bk-root {
+    font-size: 18px !important;
+}
+.bk-btn {
+    font-size: 18px !important;
+    padding: 10px 15px !important;
+}
+.bk-input {
+    font-size: 18px !important;
+}
 .tabulator .tabulator-cell {
-    font-size: 14px;
+    font-size: 16px !important;
 }
 .tabulator .tabulator-header .tabulator-col {
-    font-size: 14px;
+    font-size: 16px !important;
+}
+.bk-tab {
+    font-size: 20px !important;
+}
+
+/* Additional increases for mobile devices */
+@media (max-width: 768px) {
+    .bk-root {
+        font-size: 20px !important;
+    }
+    .bk-btn {
+        font-size: 20px !important;
+        padding: 12px 18px !important;
+    }
+    .bk-input {
+        font-size: 20px !important;
+    }
+    .tabulator .tabulator-cell {
+        font-size: 18px !important;
+    }
+    .tabulator .tabulator-header .tabulator-col {
+        font-size: 18px !important;
+    }
+    .bk-tab {
+        font-size: 22px !important;
+    }
 }
 """)
 
@@ -204,8 +242,7 @@ def create_radials(models,player_type):
                 hoverinfo='text',
                 text=hover_text
             ))
-            
-
+                
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(visible=False, range=[0, max_value])
@@ -217,13 +254,13 @@ def create_radials(models,player_type):
                 yanchor="bottom", 
                 y=-0.25, 
                 xanchor="center", 
-                x=0.5
+                x=0.5,
+                font=dict(size=18)
             ),
             template="plotly",
             dragmode=False,
-            font = dict(
-                size = 18
-            )        )
+            font = dict(size = 20)        
+        )
 
         # # Apply margin settings as the last step
         # fig.update_layout(
@@ -244,7 +281,7 @@ model_selector_pitchers, update_minpos_options_pitchers, update_player_selector_
 
 # Create accordions
 accordion_hitters = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_hitters, update_minpos_options_hitters)))
-accordion_pitchers = pn.Accordion(('Model and Position Selector', pn.Column(model_selector_pitchers, update_minpos_options_pitchers)))
+accordion_pitchers = pn.Accordion(('Model Selector', pn.Column(model_selector_pitchers, update_minpos_options_pitchers)))
 
 # Create the layout
 # hitters
