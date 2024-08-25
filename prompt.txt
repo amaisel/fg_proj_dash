@@ -1,0 +1,5 @@
+Make radial.py more mobile friendly.
+
+The buttons and text are too small.
+
+The player selector is hard to interact with via touch.

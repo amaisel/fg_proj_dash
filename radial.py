@@ -13,45 +13,45 @@ pn.extension('tabulator')
 pn.config.raw_css.append("""
 /* Base styles for all screen sizes */
 .bk-root {
-    font-size: 18px !important;
+    font-size: 20px !important;
 }
 .bk-btn {
-    font-size: 18px !important;
-    padding: 10px 15px !important;
+    font-size: 20px !important;
+    padding: 12px 18px !important;
 }
 .bk-input {
-    font-size: 18px !important;
+    font-size: 20px !important;
 }
 .tabulator .tabulator-cell {
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 .tabulator .tabulator-header .tabulator-col {
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 .bk-tab {
-    font-size: 20px !important;
+    font-size: 22px !important;
 }
 
 /* Additional increases for mobile devices */
 @media (max-width: 768px) {
     .bk-root {
-        font-size: 20px !important;
+        font-size: 22px !important;
     }
     .bk-btn {
-        font-size: 20px !important;
-        padding: 12px 18px !important;
+        font-size: 22px !important;
+        padding: 14px 20px !important;
     }
     .bk-input {
-        font-size: 20px !important;
+        font-size: 22px !important;
     }
     .tabulator .tabulator-cell {
-        font-size: 18px !important;
+        font-size: 20px !important;
     }
     .tabulator .tabulator-header .tabulator-col {
-        font-size: 18px !important;
+        font-size: 20px !important;
     }
     .bk-tab {
-        font-size: 22px !important;
+        font-size: 24px !important;
     }
 }
 """)
@@ -135,15 +135,30 @@ def create_radials(models,player_type):
         return player_selector
 
     # Widget for player selection with auto-suggest feature
-    # Widget for player selection with auto-suggest feature
     player_selector = pn.widgets.MultiChoice(
         name='Select Players', 
         options=[], 
         value=[], 
         placeholder='Type to search players...',
-        sizing_mode='stretch_width'  # Make the widget stretch across the screen
+        sizing_mode='stretch_width',  # Make the widget stretch across the screen
+        css_classes=['player-selector']  # Add a custom CSS class for further styling
     )
-    # Create the DataFrame widget outside of the function
+
+    pn.config.raw_css.append("""
+    /* Custom styles for player selector */
+    .player-selector .bk-input {
+        font-size: 20px !important;
+        padding: 12px 18px !important;
+    }
+
+    /* Additional increases for mobile devices */
+    @media (max-width: 768px) {
+        .player-selector .bk-input {
+            font-size: 22px !important;
+            padding: 14px 20px !important;
+    }
+    }
+    """)
     # Create the DataFrame widget outside of the function
     df_widget = pn.widgets.Tabulator(
 
@@ -309,3 +324,5 @@ tabs = pn.Tabs(
 )
 # To display the tabs in the notebook
 tabs.servable()
+
+
